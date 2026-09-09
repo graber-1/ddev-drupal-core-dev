@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#ddev-generated
+## Description: Run Drupal core's own `dr` CLI (cache:rebuild, site:install, quick-start, theme:generate, server, ...)
+## Usage: dr [command] [flags]
+## Example: ddev dr list\nddev dr cache:rebuild\nddev dr site:install standard
+
+dr "$@"

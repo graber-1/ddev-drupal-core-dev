@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#ddev-generated
+## Description: Run Drupal core's code quality checks (phpcs, phpstan, cspell, eslint) against changed files
+## Usage: code-check [flags]
+## Example: ddev code-check\nddev code-check --branch main\nddev code-check --cached
+
+CORE_FOLDER=core
+if [ -d "web/core" ]; then
+  CORE_FOLDER=web/core
+fi
+
+cd /var/www/html && ./$CORE_FOLDER/scripts/dev/commit-code-check.sh "$@"

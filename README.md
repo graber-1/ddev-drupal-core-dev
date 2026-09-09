@@ -1,9 +1,9 @@
-# ddev-core-dev
+# ddev-drupal-core-dev
 
 This is a DDEV addon for doing Drupal core development.
 
-We're in #ddev-for-core-dev on [Drupal Slack](https://www.drupal.org/community/contributor-guide/reference-information/talk/tools/slack) (but please try and keep work
-and feature requests in Issues where it's visible to all 🙏)
+Forked from [justafish/ddev-drupal-core-dev](https://github.com/justafish/ddev-drupal-core-dev) —
+see [Changes from upstream](#changes-from-upstream) below for what's different and why.
 
 ## Installation
 ```
@@ -11,31 +11,32 @@ git clone https://git.drupalcode.org/project/drupal.git drupal
 cd drupal
 ddev config --omit-containers=db --disable-settings-management
 ddev composer install
-ddev add-on get justafish/ddev-drupal-core-dev
+ddev add-on get graber-1/ddev-drupal-core-dev
 
 # See included commands
-ddev drupal list
+ddev dr list
 ```
-
-The `drupal` command is an extension of core's [`drupal`](https://git.drupalcode.org/project/drupal/-/blob/11.x/core/scripts/drupal?ref_type=heads)
-command. This allows you to perform some basic tasks without needing to install
-`drush` which will alter your composer dependencies.
 
 ## Examples
 ```
-# Install drupal
-# Run "ddev drupal install" to see all available options
-ddev drupal install standard
-
-# Reset the site so it can be installed again
-# Use this rather than deleting sites/default/files and settings.php by hand
-ddev drupal uninstall
+# Drupal core's own CLI (cache:rebuild, site:install, quick-start, theme:generate, server, ...)
+ddev dr list
+ddev dr cache:rebuild
+ddev dr site:install standard
 
 # Run PHPUnit tests
 ddev phpunit core/modules/announcements_feed
 
 # Run Nightwatch tests (currently only runs on Chrome)
 ddev nightwatch --tag core
+
+# Run core's code quality checks (phpcs, phpstan, cspell, eslint) against changed files
+ddev code-check --branch main
+
+# Manage contrib modules for development without touching composer by hand
+ddev add-module token
+ddev update-module token
+ddev remove-module token
 ```
 
 ## Nightwatch Examples
@@ -84,19 +85,55 @@ a11y test for a custom admin theme
 ddev nightwatch --tag a11y:admin --adminTheme seven
 ```
 
-## Core Linting
+## Code quality checks
 
-This will run static tests against core standards.
+`ddev code-check` wraps core's own `core/scripts/dev/commit-code-check.sh` (phpcs, phpstan,
+cspell, eslint), scoped to changed files for speed:
 
 ```
-ddev drupal lint:phpstan
-ddev drupal lint:phpcs
-ddev drupal lint:js
-ddev drupal lint:css
-ddev drupal lint:cspell
-# CSpell against only modified files
-ddev drupal lint:cspell --modified-only
+ddev code-check                 # files changed in the working tree
+ddev code-check --branch main   # everything changed vs. main
+ddev code-check --cached        # staged files
 ```
 
-You can run all linting with `ddev drupal lint`, or with fail-fast turned on:
-`ddev drupal lint --stop-on-failure`
+## Managing contrib modules
+
+`ddev add-module`/`ddev update-module`/`ddev remove-module` clone/require/remove a contrib module
+as a Composer path repository, so you can develop against a real git checkout without drush:
+
+```
+ddev add-module token              # auto-detects the module's default branch
+ddev add-module token 2.0.x        # or pin a branch
+ddev add-module --https token      # clone over HTTPS instead of SSH
+
+# after switching the module's own git branch:
+ddev update-module token
+
+ddev remove-module token
+```
+
+## Changes from upstream
+
+This fork drops the custom PHP Symfony-console command layer (the old `drupal` command and its
+`Lint*`/`Test*`/`Cache`/`Uninstall`/`ModuleInstall`/`AdminLogin` subcommands), because:
+
+- Drupal core now ships its own CLI (`vendor/bin/dr`, `Drupal\Core\Command\DrupalApplication`)
+  with `cache:rebuild` (aliases `cr`/`rebuild`), `site:install`, `quick-start`, `theme:generate`,
+  and `server` built in — no addon code needed. `ddev dr` is a one-line passthrough to it.
+- The `Lint*` commands are superseded by `ddev code-check`, which runs the same tools
+  incrementally against changed files instead of the whole codebase.
+- `TestCommand` and `TestBrowserCommand` are dropped: the former's own description said "you
+  probably don't want to do this — instead run PHPUnit directly," and the latter depended on
+  `.ddev/phpunit-{chrome,firefox}.xml` templates that never existed in this repo either.
+- `ModuleInstallCommand`/`AdminLoginCommand`/`UninstallCommand`/`TestExtensionsCommand` filled
+  real gaps (drush-free module install/login/reset), but weren't in active use — dropped for now.
+  If you need one of these again, `ddev exec dr <command>` plus a small custom `.services.yml`
+  tagged `console.command` is the more idiomatic way to add it today (core auto-discovers
+  module-provided console commands), rather than a parallel Symfony `Application`.
+
+Also added `ddev add-module`/`ddev update-module`/`ddev remove-module` (contrib module management
+without drush) and `ddev code-check`, both carried over from local project tooling that predated
+this fork.
+
+**Known limitation carried over as-is:** `web-build/Dockerfile.chromium` pins Chromium via a
+dated Debian snapshot repository — it will need bumping periodically as that snapshot ages out.
