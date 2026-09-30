@@ -9,13 +9,17 @@ see [Changes from upstream](#changes-from-upstream) below for what's different a
 ```
 git clone https://git.drupalcode.org/project/drupal.git drupal
 cd drupal
-ddev config --omit-containers=db --disable-settings-management
+ddev config --disable-settings-management
 ddev composer install
 ddev add-on get graber-1/ddev-drupal-core-dev
 
 # See included commands
 ddev dr list
 ```
+
+Tests run against MySQL 8.4 and Selenium Chromium 133, the same as core's GitLab CI. Core
+performance tests only run on MySQL. Projects configured with `--omit-containers=db` need `db`
+removed from `omit_containers` in `.ddev/config.yaml`.
 
 ## Examples
 ```

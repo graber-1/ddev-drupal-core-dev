@@ -4,6 +4,7 @@ description: How to run targeted PHPUnit tests instead of the whole module
 type: feedback
 originSessionId: 1090c3e8-39b1-40fb-8d45-205d3ad1c397
 ---
+<!-- #ddev-generated -->
 When running PHPUnit tests, always target the smallest scope that covers the failure:
 1. Run a specific file: `ddev phpunit core/modules/views/tests/src/Unit/Plugin/area/ResultTest.php`
 2. Run a specific test method: add `--filter testMethodName`

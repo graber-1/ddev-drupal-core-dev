@@ -2,7 +2,9 @@
 services:
   chrome:
     container_name: ddev-${DDEV_SITENAME}-chrome
-    image: selenium/standalone-chromium:151.0
+    # Same browser version as core's GitLab CI (.with-selenium-chrome in
+    # .gitlab-ci.yml). The chromium image is used since it is multi-arch.
+    image: selenium/standalone-chromium:133.0
     labels:
       com.ddev.site-name: ${DDEV_SITENAME}
       com.ddev.approot: $DDEV_APPROOT

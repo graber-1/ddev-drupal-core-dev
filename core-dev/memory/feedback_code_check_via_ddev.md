@@ -7,6 +7,7 @@ metadata:
   originSessionId: 3d4be8fc-2fe1-467d-acbe-c8dfbec543c6
   modified: 2026-09-09T08:35:04.971Z
 ---
+<!-- #ddev-generated -->
 
 Run `ddev code-check [flags]` (e.g. `ddev code-check --branch main`), never
 `./core/scripts/dev/commit-code-check.sh` directly on the host.

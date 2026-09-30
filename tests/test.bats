@@ -23,7 +23,7 @@ setup() {
 
   composer create-project drupal/recommended-project ${TESTDIR_COMPOSER} --ignore-platform-reqs
   cd "${TESTDIR_COMPOSER}"
-  run ddev config --project-name="${PROJNAME_COMPOSER}" --omit-containers=db --disable-settings-management
+  run ddev config --project-name="${PROJNAME_COMPOSER}" --disable-settings-management
   assert_success
   run ddev start -y
   assert_success
@@ -35,7 +35,7 @@ setup() {
 
   git clone --depth=1 https://git.drupalcode.org/project/drupal.git ${TESTDIR_CHECKOUT}
   cd "${TESTDIR_CHECKOUT}"
-  run ddev config --project-name="${PROJNAME_CHECKOUT}" --omit-containers=db --disable-settings-management
+  run ddev config --project-name="${PROJNAME_CHECKOUT}" --disable-settings-management
   assert_success
   run ddev start -y
   assert_success

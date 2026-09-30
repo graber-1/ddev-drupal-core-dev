@@ -1,3 +1,4 @@
+<!-- #ddev-generated -->
 # Memory Index
 
 - [PHPUnit test targeting](feedback_phpunit_targeting.md) — target specific file or --filter method, not whole module suite

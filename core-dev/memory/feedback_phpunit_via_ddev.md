@@ -7,6 +7,7 @@ metadata:
   originSessionId: 94da1b8e-8367-40a5-94ff-91a68ab0139d
   modified: 2026-07-23T09:24:16.253Z
 ---
+<!-- #ddev-generated -->
 
 Run tests with `ddev phpunit [path/filter]`, never `./vendor/bin/phpunit -c core ...` directly on the host.
 
