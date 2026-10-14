@@ -21,6 +21,7 @@ project_files:
   - core-dev/memory/feedback_code_check_via_ddev.md
   - core-dev/memory/feedback_conditionals.md
   - core-dev/memory/feedback_no_empty.md
+  - core-dev/memory/feedback_ignore_agents_md.md
 
 global_files: []
 

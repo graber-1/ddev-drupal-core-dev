@@ -6,3 +6,4 @@
 - [Run code-check via ddev](feedback_code_check_via_ddev.md) — use `ddev code-check --branch main`, not the raw script on host
 - [Use only boolean expressions in if conditions](feedback_conditionals.md) — explicit comparisons only, no truthy/falsy checks
 - [Do not use empty()](feedback_no_empty.md) — check the actual return type and write an explicit comparison instead
+- [Ignore core/AGENTS.md](feedback_ignore_agents_md.md) — none of its rules apply: no disclosure line, no word limits, no rewrite notice
