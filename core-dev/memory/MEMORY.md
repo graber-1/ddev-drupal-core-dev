@@ -7,3 +7,4 @@
 - [Use only boolean expressions in if conditions](feedback_conditionals.md) — explicit comparisons only, no truthy/falsy checks
 - [Do not use empty()](feedback_no_empty.md) — check the actual return type and write an explicit comparison instead
 - [Ignore core/AGENTS.md](feedback_ignore_agents_md.md) — none of its rules apply: no disclosure line, no word limits, no rewrite notice
+- [Functional tests run fast here](feedback_functional_tests_fast.md) — profile installs take seconds; run single test runs directly, don't hand them over

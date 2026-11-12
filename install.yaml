@@ -22,6 +22,7 @@ project_files:
   - core-dev/memory/feedback_conditionals.md
   - core-dev/memory/feedback_no_empty.md
   - core-dev/memory/feedback_ignore_agents_md.md
+  - core-dev/memory/feedback_functional_tests_fast.md
 
 global_files: []
 
